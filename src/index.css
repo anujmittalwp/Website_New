@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Montserrat:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Cormorant Garamond", serif;
+  --font-sans: "Montserrat", sans-serif;
+  --font-body: "Inter", sans-serif;
+  
+  --color-brand-paper: #f5f2ed;
+  --color-brand-ink: #1a1a1a;
+  --color-brand-gold: #c5a059;
+  --color-brand-gold-dark: #a6854a;
+  --color-brand-olive: #5a5a40;
+  --color-brand-olive-dark: #3e3e2c;
+}
+
+@layer base {
+  body {
+    @apply text-brand-ink bg-brand-paper antialiased font-body;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif;
+  }
+}
+
+@layer components {
+  .container-custom {
+    @apply max-w-7xl mx-auto px-6 lg:px-12;
+  }
+  
+  .section-padding {
+    @apply py-24 md:py-32;
+  }
+
+  .btn-premium {
+    @apply inline-flex items-center justify-center px-8 py-4 rounded-full font-sans text-xs font-bold uppercase tracking-widest transition-all duration-300 border;
+  }
+
+  .btn-gold {
+    @apply bg-brand-gold border-brand-gold text-white hover:bg-brand-gold-dark hover:border-brand-gold-dark shadow-lg shadow-brand-gold/20;
+  }
+
+  .btn-outline {
+    @apply border-brand-ink/20 text-brand-ink hover:bg-brand-ink hover:text-white;
+  }
+
+  .vertical-text {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    @apply text-[10px] uppercase tracking-[0.2em] font-sans font-bold text-brand-ink/40;
+  }
+}

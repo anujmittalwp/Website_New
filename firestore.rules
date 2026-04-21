@@ -1,0 +1,61 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && 
+        (request.auth.token.email == "rcomoilsandsolvex@gmail.com" || request.auth.token.email == "anujkumarmittal@gmail.com");
+    }
+
+    function isValidEmail(email) {
+      return email is string && email.size() > 5 && email.size() < 100;
+    }
+
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /inquiries/{inquiryId} {
+      allow read: if isAdmin();
+      allow create: if isAdmin() || (request.resource.data.keys().hasAll(['name', 'email', 'message', 'createdAt']) &&
+                       request.resource.data.name is string &&
+                       isValidEmail(request.resource.data.email) &&
+                       request.resource.data.createdAt is timestamp);
+      allow update, delete: if isAdmin();
+    }
+
+    match /contactMessages/{messageId} {
+      allow read: if isAdmin();
+      allow create: if request.resource.data.keys().hasAll(['name', 'email', 'message', 'createdAt']) &&
+                       request.resource.data.name is string &&
+                       isValidEmail(request.resource.data.email) &&
+                       request.resource.data.createdAt is timestamp;
+      allow update, delete: if isAdmin();
+    }
+
+    match /siteContent/{documentId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /chat_sessions/{sessionId} {
+      allow read: if isAdmin();
+      allow create: if true;
+      allow update: if isAdmin();
+    }
+
+    match /chat_messages/{messageId} {
+      allow read: if true; // In production, should be restricted by sessionId
+      allow create: if true;
+      allow update, delete: if isAdmin();
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

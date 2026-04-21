@@ -1,0 +1,82 @@
+{
+  "entities": {
+    "product": {
+      "title": "Product",
+      "description": "A mustard-based product offered by RCOM.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique identifier for the product." },
+        "title": { "type": "string", "description": "Name of the product." },
+        "subtitle": { "type": "string", "description": "Short tagline for the product." },
+        "description": { "type": "string", "description": "Detailed description of the product." },
+        "image": { "type": "string", "format": "url", "description": "URL to the main product image." },
+        "cardImage": { "type": "string", "format": "url", "description": "URL to the product image used in card/grid view." },
+        "benefits": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "List of key benefits."
+        },
+        "specs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": { "type": "string" },
+              "value": { "type": "string" }
+            }
+          },
+          "description": "Technical specifications."
+        },
+        "packaging": { "type": "string", "description": "Packaging details." },
+        "order": { "type": "number", "description": "Display order." }
+      },
+      "required": ["title", "description", "image"]
+    },
+    "inquiry": {
+      "title": "Inquiry",
+      "description": "A bulk order or general inquiry from a potential buyer.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "Full name of the inquirer." },
+        "company": { "type": "string", "description": "Company name." },
+        "email": { "type": "string", "format": "email", "description": "Contact email." },
+        "phone": { "type": "string", "description": "Contact phone number." },
+        "country": { "type": "string", "description": "Destination country." },
+        "product": { "type": "string", "description": "Product of interest." },
+        "quantity": { "type": "string", "description": "Estimated quantity." },
+        "message": { "type": "string", "description": "Additional requirements." },
+        "status": { "type": "string", "enum": ["new", "contacted", "closed"], "description": "Current status of the inquiry." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Timestamp when the inquiry was created." }
+      },
+      "required": ["name", "email", "message", "createdAt"]
+    },
+    "contactMessage": {
+      "title": "Contact Message",
+      "description": "A general message from the contact form.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "phone": { "type": "string" },
+        "subject": { "type": "string" },
+        "message": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "email", "message", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/products/{productId}": {
+      "schema": "product",
+      "description": "Collection of products."
+    },
+    "/inquiries/{inquiryId}": {
+      "schema": "inquiry",
+      "description": "Collection of bulk inquiries."
+    },
+    "/contactMessages/{messageId}": {
+      "schema": "contactMessage",
+      "description": "Collection of general contact messages."
+    }
+  }
+}
